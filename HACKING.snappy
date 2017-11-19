@@ -1,0 +1,28 @@
+Building bluez for Ubuntu Snappy Core Rolling
+*********************************************
+
+This file provides details and instructions for building a bluez
+snap that can be installed on Snappy Core Rolling images.
+
+Snapcraft 2.0 is required to build this snap, and the snap must
+currently be built on a system running xenial.
+
+As cross compiles currently are not supported, individual architecture
+specific snaps need to be build natively.  The current supported
+architectures are: amd64, armhf, and arm64.
+
+As the security policy in the Snappy Core Rolling release is
+currently evolving, this snap still manually installs AppArmor
+and Seccomp files, and also installs framework-policy files to
+allow the bluez command-line tools to talk to the daemons using
+the bluez_client capability.
+
+As snapcraft 2.0 no longer supports framework snaps, you need to
+manually over-write snapcraft's meta.py file, which will then
+properly generate the snap.yaml file with type=framework.  This
+modified version of meta.py can be found in the /x-snapcraft dir
+in this branch.
+
+This is a temporary measure, and will be addressed once the intended
+security policy changes land in the Snappy Core rolling release.
+

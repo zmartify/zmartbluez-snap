@@ -1,0 +1,143 @@
+name: zmartbluez
+version: 5.47
+type: app
+summary: Bluetooth tools and daemons
+architectures: [armhf]
+description: |
+ This package contains tools and system daemons for using Bluetooth
+ devices. BlueZ is the official Linux Bluetooth protocol stack. It
+ is an Open Source project distributed under GNU General Public
+ License (GPL). See the project homepage for more details:
+ https://code.launchpad.net/~snappy-hwe-team/snappy-hwe-snaps/+git/bluez
+confinement: strict
+grade: stable
+
+# NOTE: the alias syntax is depreciated with snapd 2.25 however it needs to
+# stay to guarantee that all clients are updated correctly.
+
+apps:
+  bluetoothctl:
+    command: bin/client-wrapper usr/bin/bluetoothctl
+    plugs: [client, uhid]
+    aliases: [bluetoothctl]
+  obexctl:
+    command: bin/client-wrapper usr/bin/obexctl
+    plugs: [client]
+    aliases: [obexctl]
+  bluez:
+    command: "usr/lib/bluetooth/bluetoothd -C -E"
+    daemon: simple
+    slots: [service]
+    plugs: [uhid]
+  obex:
+    command: "usr/lib/bluetooth/obexd"
+    daemon: simple
+    slots: [service]
+  btinit:
+    command: bin/bt-init
+    daemon: forking
+    slots: [service]
+  hciconfig:
+    command: usr/bin/hciconfig
+    plugs: [bluetooth-control]
+    aliases: [hciconfig]
+  hcidump:
+    command: usr/bin/hcidump
+    plugs: [bluetooth-control, network-control, home]
+    aliases:
+      - hcidump
+  hciattach:
+    command: usr/bin/hciattach
+    plugs: [bluetooth-control]
+    aliases: [hciattach]
+  hcitool:
+    command: usr/bin/hcitool
+    plugs: [bluetooth-control]
+    aliases: [hcitool]
+  sdptool:
+    command: usr/bin/sdptool
+    plugs: [client]
+    aliases: [sdptool]
+  btmon:
+    command: usr/bin/btmon
+    plugs: [bluetooth-control, network-control, home]
+    aliases: [btmon]
+  btmgmt:
+    command: usr/bin/btmgmt
+    plugs: [bluetooth-control, network-control]
+    aliases: [btmgmt]
+  meshctl:
+    command: usr/bin/meshctl
+    plugs: [bluetooth-control, network-control]
+    aliases: [meshctl]
+
+plugs:
+  client:
+      interface: bluez
+slots:
+  service:
+      interface: bluez
+
+parts:
+  bluez-common:
+    plugin: dump
+    source: bin/
+    organize:
+      client-wrapper: bin/client-wrapper
+      bt-init: bin/bt-init
+  bluez:
+    plugin: autotools
+    source: https://git.launchpad.net/~snappy-hwe-team/snappy-hwe-snaps/+git/bluez
+    source-type: git
+    source-branch: bluez/5.47
+    configflags:
+      - --prefix=/usr
+      - --libexec=/usr/lib/
+      - --enable-experimental
+      - --enable-threads
+      - --disable-cups
+      - --enable-obex
+      - --disable-systemd
+      - --disable-silent-rules
+      - --enable-test
+      - --enable-deprecated
+      - --enable-mesh
+    build-packages:
+      - libglib2.0-dev
+      - libdbus-1-dev
+      - libical-dev
+      - libreadline6-dev
+      - libudev-dev
+      - udev
+      - pkg-config
+      - libjson-c-dev
+    stage-packages:
+      - libical1a
+    filesets:
+      libical1a:
+        - usr/lib/*/libical*
+    snap:
+      - usr/lib/bluetooth/bluetoothd
+      - usr/lib/bluetooth/obexd
+      - usr/bin/bluetoothctl
+      - usr/bin/obexctl
+      - usr/bin/hciconfig
+      - usr/bin/hcidump
+      - usr/bin/hciattach
+      - usr/bin/hcitool
+      - usr/bin/sdptool
+      - usr/bin/btmon
+      - usr/bin/btmgmt
+      - usr/bin/meshctl
+      - usr/share/doc/libical1a/copyright
+      - $libical1a
+    install: |
+      # Run all tests shiped by default
+      make check
+
+  common:
+    plugin: dump
+    organize:
+      copyright: usr/share/doc/bluez/copyright
+    prime:
+      - usr/share/doc/bluez/copyright

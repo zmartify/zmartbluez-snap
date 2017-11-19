@@ -1,0 +1,51 @@
+#
+# Copyright (C) 2016 Canonical Ltd
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 3 as
+# published by the Free Software Foundation.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+project: bluez
+
+environment:
+    PROJECT_PATH: /home/bluez
+    TESTSLIB: $PROJECT_PATH/tests/lib
+    SNAP_NAME: bluez
+    SNAP_ARCH: amd64
+    # Allow the host to pass the channel to use for the test run
+    SNAP_CHANNEL: $(HOST:echo $SNAP_CHANNEL)
+    SNAP_AUTO_ALIASES: bluetoothctl obexctl hciconfig hcidump hciattach hcitool
+
+backends:
+    qemu:
+        systems:
+            - ubuntu-core-16:
+                username: test
+                password: test
+
+# Put this somewhere where we have read-write access
+path: /home/bluez
+
+exclude:
+  - .git
+
+prepare: |
+  . $TESTSLIB/prepare-all.sh
+
+suites:
+    tests/main/:
+        summary: Full-system tests for BlueZ
+        systems:
+            - ubuntu-core-16
+        prepare: |
+            . $TESTSLIB/prepare.sh
+        restore-each: |
+            . $TESTSLIB/restore-each.sh

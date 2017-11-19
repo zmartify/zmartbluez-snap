@@ -1,0 +1,19 @@
+2017-09-13 bluez 5.44-3
+
+  [ Konrad Zapałowicz <konrad.zapalowicz@canonical.com> ]
+  * docs: add loopback links to reduce bounce rate
+    
+    this commit adds loopback links on index page in a hope to reduce
+    the bounce rate off page.
+    Merge-Proposal: https://code.launchpad.net/~kzapalowicz/snappy-hwe-snaps/+git/bluez/+merge/327719
+  * docs: improve btmon part
+    Merge-Proposal: https://code.launchpad.net/~kzapalowicz/snappy-hwe-snaps/+git/bluez/+merge/328060
+  * snap: add btmgmt tool
+    Merge-Proposal: https://code.launchpad.net/~kzapalowicz/snappy-hwe-snaps/+git/bluez/+merge/329254
+
+  [ kzapalowicz ]
+  * See more information in merge proposal
+    Merge-Proposal: https://code.launchpad.net/~kzapalowicz/snappy-hwe-snaps/+git/bluez/+merge/323979
+  * See more information in merge proposal
+    Merge-Proposal: https://code.launchpad.net/~kzapalowicz/snappy-hwe-snaps/+git/bluez/+merge/325064
+

@@ -1,0 +1,10 @@
+summary: Verify aliases provided by the snap are correctly enabled
+
+execute: |
+    . $TESTSLIB/utilities.sh
+    test -e /snap/bin/bluetoothctl
+    test -e /snap/bin/obexctl
+    test -e /snap/bin/hciconfig
+    test -e /snap/bin/hcidump
+    test -e /snap/bin/hciattach
+    test -e /snap/bin/hcitool

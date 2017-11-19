@@ -1,0 +1,35 @@
+#! /bin/sh
+
+if [ "$(id -u)" -ne 0 ]; then
+   echo "This script must be run as root" 1>&2
+   exit 1
+fi
+
+set -e
+
+MYHW="$(cat /proc/cpuinfo |grep ^Hardware|sed 's/^.*: //')"
+HCIATTACH="$SNAP/usr/bin/hciattach"
+HCICONFIG="$SNAP/usr/bin/hciconfig"
+DEVICE=""
+
+[ -x "$HCIATTACH" ] || exit 0
+
+case "$MYHW" in
+    BCM2709)
+        DEVICE="Pi3"
+        OPTS="/dev/ttyAMA0 bcm43xx 921600 noflow -"
+        CFGP="hci0 up"
+    ;;
+    *)
+        exit 0
+    ;;
+esac
+
+echo "Initializing $DEVICE Bluetooth: "
+
+$HCIATTACH $OPTS
+
+$HCICONFIG $CFGP
+
+echo "done ..."
+

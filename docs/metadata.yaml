@@ -1,0 +1,60 @@
+site_title: Bluetooth documentation
+site_logo_url: https://assets.ubuntu.com/v1/c5cb0f8e-picto-ubuntu.svg
+
+navigation:
+  - title: Introduction
+    children:
+      - title: About BlueZ
+        location: index.md
+      - title: Bluetooth on Ubuntu Core
+        location: bluetooth-on-ubuntu-core.md
+
+  - title: Install & Configure
+    children:
+    - title: Install BlueZ
+      location: install-bluez.md
+
+  - title: Reference
+    children:
+    - title: Introduction
+      location: reference/introduction.md
+    - title: Prerequisites
+      location: reference/using-prerequisites.md
+    - title: Commands
+      location: reference/available-commands.md
+    - title: DBus API
+      location: reference/dbus-api.md
+    - title: Pairing
+      children:
+      - title: Introduction
+        location: reference/pairing/introduction.md
+      - title: Outbound Pairing
+        location: reference/pairing/outbound.md
+      - title: Inbound Pairing
+        location: reference/pairing/inbound.md
+    - title: Sending Files
+      location: reference/sending-files.md
+    - title: Accessing GATT Services
+      location: reference/gatt-services.md
+    - title: Device Enablement
+      children:
+      - title: Introduction
+        location: reference/enablement/introduction.md
+      - title: Supported Linux Kernels
+        location: reference/enablement/supported-kernels.md
+      - title: Linux kernel configuration options
+        location: reference/enablement/kernel-configuration-options.md
+      - title: Snapping a Bluetooth Application
+        location: reference/enablement/snapping-bluetooth-enabled-application.md
+
+  - title: Troubleshoot
+    children:
+      - title: FAQ
+        location: troubleshoot/faq.md
+
+  - title: Release Notes
+    location: release-notes.md
+
+  - title: Report a Bug
+    location: report-bug.md
+
