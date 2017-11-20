@@ -2,7 +2,8 @@ name: zmartbluez
 version: 5.47
 type: app
 summary: Bluetooth tools and daemons
-architectures: [armhf]
+architectures:
+  - armhf
 description: |
  This package contains tools and system daemons for using Bluetooth
  devices. BlueZ is the official Linux Bluetooth protocol stack. It
@@ -14,6 +15,9 @@ grade: stable
 
 # NOTE: the alias syntax is depreciated with snapd 2.25 however it needs to
 # stay to guarantee that all clients are updated correctly.
+plugs:
+  bt-serial:
+    interface: serial-port
 
 apps:
   bluetoothctl:
@@ -36,7 +40,7 @@ apps:
   btinit:
     command: bin/bt-init
     # daemon: forking
-    slots: [service,bt-serial]
+    plugs: [bluez]
   connect:
     command: connect-interfaces
   sethostname:
