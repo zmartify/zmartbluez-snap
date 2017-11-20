@@ -44,6 +44,7 @@ apps:
     command: connect-interfaces
   sethostname:
     command: set-hostname
+    plugs: [bluetooth-control, network-control, client]
   hciconfig:
     command: usr/bin/hciconfig
     plugs: [bluetooth-control]
