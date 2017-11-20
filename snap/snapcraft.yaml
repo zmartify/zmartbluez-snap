@@ -40,7 +40,7 @@ apps:
   btinit:
     command: bin/bt-init
     # daemon: forking
-    plugs: [bluez]
+    plugs: [client,bt-serial]
   connect:
     command: connect-interfaces
   sethostname:
