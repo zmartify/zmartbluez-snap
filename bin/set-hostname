@@ -1,0 +1,24 @@
+#! /bin/sh
+
+if [ "$(id -u)" -ne 0 ]; then
+   echo "This script must be run as root" 1>&2
+   exit 1
+fi
+
+set -e
+
+# Set hostname to ZmartHUB.'serialno'
+#
+#
+
+OLDNAME="$(hostname)"
+NEWNAME="ZmartHUB-$(cat /proc/cpuinfo | grep Serial | cut -d ' ' -f 2)"
+
+if [ "$OLDNAME" != "$NEWNAME" ]; then
+  echo "Changing hostname to $NEWNAME"
+  hostnamectl set-hostname $NEWNAME
+  systemctl restart systemd-logind.service
+fi
+
+echo "done ..."
+

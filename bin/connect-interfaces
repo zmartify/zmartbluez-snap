@@ -1,0 +1,13 @@
+#!/bin/bash
+
+echo "This is a helper script and it shoud be called by user directly!"
+echo "Connecting interfaces for $SNAP_NAME"
+
+snap connect $SNAP_NAME:bluetooth-control :bluetooth-control
+snap connect $SNAP_NAME:client zmartbluez:service
+snap connect $SNAP_NAME:network-control :network-control
+snap connect $SNAP_NAME:uhid core
+snap connect $SNAP_NAME:home core
+
+snap interfaces | grep $SNAP_NAME
+

@@ -37,6 +37,10 @@ apps:
     command: bin/bt-init
     daemon: forking
     slots: [service]
+  connect:
+    command: connect-interfaces
+  sethostname:
+    command: set-hostname
   hciconfig:
     command: usr/bin/hciconfig
     plugs: [bluetooth-control]
@@ -116,7 +120,7 @@ parts:
     filesets:
       libical1a:
         - usr/lib/*/libical*
-    snap:
+    prime:
       - usr/lib/bluetooth/bluetoothd
       - usr/lib/bluetooth/obexd
       - usr/bin/bluetoothctl
