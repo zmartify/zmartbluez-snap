@@ -35,7 +35,7 @@ apps:
     slots: [service]
   btinit:
     command: bin/bt-init
-    daemon: forking
+    # daemon: forking
     slots: [service]
   connect:
     command: connect-interfaces
