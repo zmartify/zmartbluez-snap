@@ -39,7 +39,7 @@ apps:
   btinit:
     command: bin/bt-init
     # daemon: forking
-    plugs: [client, bt-serial]
+    plugs: [bluetooth-control, client, bt-serial]
   connect:
     command: connect-interfaces
   sethostname:
