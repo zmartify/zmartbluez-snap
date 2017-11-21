@@ -5,90 +5,116 @@ summary: Bluetooth tools and daemons
 architectures:
   - armhf
 description: |
- This package contains tools and system daemons for using Bluetooth
- devices. BlueZ is the official Linux Bluetooth protocol stack.
- This my special Zmartify version It
- is an Open Source project distributed under GNU General Public
- License (GPL). See the project homepage for more details:
- https://code.launchpad.net/~snappy-hwe-team/snappy-hwe-snaps/+git/bluez
+  This package contains tools and system daemons for using Bluetooth
+  devices. BlueZ is the official Linux Bluetooth protocol stack.
+  This my special Zmartify version It
+  is an Open Source project distributed under GNU General Public
+  License (GPL). See the project homepage for more details:
+  https://code.launchpad.net/~snappy-hwe-team/snappy-hwe-snaps/+git/bluez
 confinement: strict
 grade: stable
-
-# NOTE: the alias syntax is depreciated with snapd 2.25 however it needs to
-# stay to guarantee that all clients are updated correctly.
-
-
 apps:
   bluetoothctl:
     command: bin/client-wrapper usr/bin/bluetoothctl
-    plugs: [client, uhid]
-    aliases: [bluetoothctl]
+    plugs:
+      - client
+      - uhid
+    aliases:
+      - bluetoothctl
   obexctl:
     command: bin/client-wrapper usr/bin/obexctl
-    plugs: [client]
-    aliases: [obexctl]
+    plugs:
+      - client
+    aliases:
+      - obexctl
   bluez:
-    command: "usr/lib/bluetooth/bluetoothd -C -E"
+    command: usr/lib/bluetooth/bluetoothd -C -E
     daemon: simple
-    slots: [service]
-    plugs: [uhid]
+    slots:
+      - service
+    plugs:
+      - uhid
   obex:
-    command: "usr/lib/bluetooth/obexd"
+    command: usr/lib/bluetooth/obexd
     daemon: simple
-    slots: [service]
+    slots:
+      - service
   btinit:
     command: bin/bt-init
-    # daemon: forking
-    plugs: [bluetooth-control, client, bt-serial]
+    plugs:
+      - bluetooth-control
+      - client
+      - bt-serial
   connect:
     command: connect-interfaces
   sethostname:
     command: set-hostname
-    plugs: [bluetooth-control, network-control, client]
+    plugs:
+      - bluetooth-control
+      - network-control
+      - client
   hciconfig:
     command: usr/bin/hciconfig
-    plugs: [bluetooth-control]
-    aliases: [hciconfig]
+    plugs:
+      - bluetooth-control
+    aliases:
+      - hciconfig
   hcidump:
     command: usr/bin/hcidump
-    plugs: [bluetooth-control, network-control, home]
+    plugs:
+      - bluetooth-control
+      - network-control
+      - home
     aliases:
       - hcidump
   hciattach:
     command: usr/bin/hciattach
-    plugs: [bluetooth-control]
-    aliases: [hciattach]
+    plugs:
+      - bluetooth-control
+    aliases:
+      - hciattach
   hcitool:
     command: usr/bin/hcitool
-    plugs: [bluetooth-control]
-    aliases: [hcitool]
+    plugs:
+      - bluetooth-control
+    aliases:
+      - hcitool
   sdptool:
     command: usr/bin/sdptool
-    plugs: [client]
-    aliases: [sdptool]
+    plugs:
+      - client
+    aliases:
+      - sdptool
   btmon:
     command: usr/bin/btmon
-    plugs: [bluetooth-control, network-control, home]
-    aliases: [btmon]
+    plugs:
+      - bluetooth-control
+      - network-control
+      - home
+    aliases:
+      - btmon
   btmgmt:
     command: usr/bin/btmgmt
-    plugs: [bluetooth-control, network-control]
-    aliases: [btmgmt]
+    plugs:
+      - bluetooth-control
+      - network-control
+    aliases:
+      - btmgmt
   meshctl:
     command: usr/bin/meshctl
-    plugs: [bluetooth-control, network-control]
-    aliases: [meshctl]
-
+    plugs:
+      - bluetooth-control
+      - network-control
+    aliases:
+      - meshctl
 plugs:
   client:
-      interface: bluez
+    interface: bluez
   bt-serial:
     interface: serial-port
-
 slots:
   service:
-      interface: bluez
-
+    interface: bluez
 parts:
   bluez-common:
     plugin: dump
@@ -98,21 +124,21 @@ parts:
       bt-init: bin/bt-init
   bluez:
     plugin: autotools
-    source: https://git.launchpad.net/~snappy-hwe-team/snappy-hwe-snaps/+git/bluez
+    source: 'https://git.launchpad.net/~snappy-hwe-team/snappy-hwe-snaps/+git/bluez'
     source-type: git
     source-branch: bluez/5.47
     configflags:
-      - --prefix=/usr
-      - --libexec=/usr/lib/
-      - --enable-experimental
-      - --enable-threads
-      - --disable-cups
-      - --enable-obex
-      - --disable-systemd
-      - --disable-silent-rules
-      - --enable-test
-      - --enable-deprecated
-      - --enable-mesh
+      - '--prefix=/usr'
+      - '--libexec=/usr/lib/'
+      - '--enable-experimental'
+      - '--enable-threads'
+      - '--disable-cups'
+      - '--enable-obex'
+      - '--disable-systemd'
+      - '--disable-silent-rules'
+      - '--enable-test'
+      - '--enable-deprecated'
+      - '--enable-mesh'
     build-packages:
       - libglib2.0-dev
       - libdbus-1-dev
@@ -145,7 +171,6 @@ parts:
     install: |
       # Run all tests shiped by default
       make check
-
   common:
     plugin: dump
     organize:
