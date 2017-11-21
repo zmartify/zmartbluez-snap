@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 echo "This is a helper script and it shoud be called by user directly!"
 echo "Connecting interfaces for $SNAP_NAME"
