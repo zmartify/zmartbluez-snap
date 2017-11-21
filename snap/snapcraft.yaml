@@ -1,5 +1,5 @@
 name: zmartbluez
-version: 5.47
+version: 5.47.01
 type: app
 summary: Bluetooth tools and daemons
 architectures:
@@ -41,6 +41,7 @@ apps:
       - service
   btinit:
     command: bin/bt-init
+    daemon: forking
     plugs:
       - bluetooth-control
       - client
