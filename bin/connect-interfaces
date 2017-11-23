@@ -7,7 +7,7 @@ snap connect $SNAP_NAME:bluetooth-control
 snap connect $SNAP_NAME:client zmartbluez:service
 snap connect $SNAP_NAME:network-control
 snap connect $SNAP_NAME:uhid
-snap connect $SNAP_NAME:home core
+snap connect $SNAP_NAME:home core 
 snap connect $SNAP_NAME:bt-serial zmarthub-pi3:bt-serial
 
 snap interfaces | grep $SNAP_NAME

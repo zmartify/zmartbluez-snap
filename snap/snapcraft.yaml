@@ -28,7 +28,7 @@ apps:
     aliases:
       - obexctl
   bluez:
-    command: usr/lib/bluetooth/bluetoothd -C -E
+    command: usr/lib/bluetooth/bluetoothd -C
     daemon: simple
     slots:
       - service
@@ -41,23 +41,33 @@ apps:
       - service
   btinit:
     command: bin/bt-init
+    stop-command: bin/bt-init-stop
     daemon: forking
     plugs:
       - bluetooth-control
       - client
       - bt-serial
+      - network
+      - network-manager
+      - network-observe
+      - network-bind
+    aliases:
+      - btinit
+  btinitstop:
+    command: bin/bt-init-stop
+    plugs:
+      - client
+    aliases:
+      - btinitstop
   connect:
     command: connect-interfaces
-  sethostname:
-    command: set-hostname
-    plugs:
-      - bluetooth-control
-      - network-control
-      - client
+    aliases:
+      - connect
   hciconfig:
     command: usr/bin/hciconfig
     plugs:
       - bluetooth-control
+      - network-observe
     aliases:
       - hciconfig
   hcidump:
@@ -123,6 +133,8 @@ parts:
     organize:
       client-wrapper: bin/client-wrapper
       bt-init: bin/bt-init
+      bt-init-stop: bin/bt-init-stop
+      connect-interfaces: bin/connect-interfaces
   bluez:
     plugin: autotools
     source: 'https://git.launchpad.net/~snappy-hwe-team/snappy-hwe-snaps/+git/bluez'
@@ -164,14 +176,32 @@ parts:
       - usr/bin/hciattach
       - usr/bin/hcitool
       - usr/bin/sdptool
+      - usr/bin/btinit
+      - usr/bin/btinitstop
       - usr/bin/btmon
       - usr/bin/btmgmt
+      - usr/bin/connect
       - usr/bin/meshctl
       - usr/share/doc/libical1a/copyright
       - $libical1a
     install: |
       # Run all tests shiped by default
       make check
+  # java run time
+  jre:
+      plugin: zulu-jre
+      # zulu supported architectures(armhf, arm64,  amd64) are already handled by plugin itself
+      # define here overide for pluging's defaults, or to add additional architectures
+      # example overide:
+      # zulu:
+      #     amd64: https://www.azul.com/downloads/zulu/zdk-8-ga-linux_x64.tar.gz
+  zmarthubsrv:
+    source: jar
+    stage-packages:
+      - libbluetooth-dev
+    plugin: dump
+    organize:
+      'zmarthubsrv.jar' : jar/
   common:
     plugin: dump
     organize:

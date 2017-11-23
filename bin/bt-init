@@ -7,12 +7,6 @@ fi
 
 set -e
 
-# Set hostname to ZmartHUB.'serialno'
-#
-#
-
-BTNAME="ZmartHUB-$(cat /proc/cpuinfo | grep Serial | cut -d ' ' -f 2)"
-
 MYHW="$(cat /proc/cpuinfo |grep ^Hardware|sed 's/^.*: //')"
 HCIATTACH="$SNAP/usr/bin/hciattach"
 HCICONFIG="$SNAP/usr/bin/hciconfig"
@@ -25,6 +19,7 @@ case "$MYHW" in
         DEVICE="Pi3"
         OPTS="/dev/ttyAMA0 bcm43xx 921600 noflow -"
         CFGUP="hci0 up"
+        CFGPISCAN="hci0 piscan"
     ;;
     *)
         exit 0
@@ -34,10 +29,16 @@ esac
 echo "Initializing $DEVICE Bluetooth: "
 
 echo "Configuring options"
-$HCIATTACH $OPTS
+# If it fails, continue anyway
+$HCIATTACH $OPTS || true
 
 echo "Make sure hci0 is up and running"
-$HCICONFIG $CFGUP
+$HCICONFIG $CFGUP || true
+
+echo "Make it discoverable"
+$HCICONFIG $CFGPISCAN || true
+
+echo "Launching zmarthubsrv"
+java -jar $SNAP/jar/zmarthubsrv.jar &
 
 echo "done ..."
-
