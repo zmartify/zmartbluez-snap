@@ -8,6 +8,7 @@ fi
 set -e
 
 MYHW="$(cat /proc/cpuinfo |grep ^Hardware|sed 's/^.*: //')"
+PRETTY_NAME="ZmartHUB"
 HCIATTACH="$SNAP/usr/bin/hciattach"
 HCICONFIG="$SNAP/usr/bin/hciconfig"
 DEVICE=""
@@ -35,10 +36,14 @@ $HCIATTACH $OPTS || true
 echo "Make sure hci0 is up and running"
 $HCICONFIG $CFGUP || true
 
+echo "Set the device name to $DEVICENAME"
+$HCICONFIG $DEVICENAME || true
+
 echo "Make it discoverable"
 $HCICONFIG $CFGPISCAN || true
 
-echo "Launching zmarthubsrv"
-java -jar $SNAP/jar/zmarthubsrv.jar &
+echo "Launching Zmartify HUB Manager"
+java -jar $SNAP/jar/hubmgr.jar &
 
 echo "done ..."
+exit 0

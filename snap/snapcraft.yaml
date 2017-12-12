@@ -28,7 +28,7 @@ apps:
     aliases:
       - obexctl
   bluez:
-    command: usr/lib/bluetooth/bluetoothd -C
+    command: usr/lib/bluetooth/bluetoothd -E 
     daemon: simple
     slots:
       - service
@@ -192,13 +192,13 @@ parts:
       # example overide:
       # zulu:
       #     amd64: https://www.azul.com/downloads/zulu/zdk-8-ga-linux_x64.tar.gz
-  zmarthubsrv:
+  hubmgr:
     source: jar
     stage-packages:
       - libbluetooth-dev
     plugin: dump
     organize:
-      'zmarthubsrv.jar' : jar/
+      'hubmgr.jar' : jar/
   common:
     plugin: dump
     organize:
